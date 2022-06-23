@@ -1,70 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-     .highcharts-credits{
-        display: none;
-     }
-    </style>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .highcharts-credits {
+      display: none;
+    }
+  </style>
 </head>
+
 <body>
-    <div id="gauge-container">
-                    <!-- pecentage meter -->
-     </div>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/highcharts-more.js"></script>
-    <script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
-    <script>
-        var rawData =  70,
-      data = getData(rawData);
+
+    <hr style="
+    position: absolute;
+    width:180px;
+     height: 5px;
+     float: left;
+     color: black;
+     background-color: rgba(255,255,255,1);
+     border: none;
+     /* border-bottom: 3px solid black; */
+     z-index: 9999;
+     margin-left: 43%;
+    margin-top: 275px;
+ ">
+ 
+
+  <div id="gauge-container">
+    <!-- pecentage meter -->
+  </div>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/highcharts-more.js"></script>
+  <script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const ranking = urlParams.get('ranking');
     
+    let background = 'white';
+    let opacity = 0.3
+    if(urlParams.get('result')){
+      if(urlParams.get('result')==='good'){
+        opacity = 1
+        background = '#51d097'
+      }
+      else if(urlParams.get('result')==='neutral'){
+      opacity = 1
+        background = "#FFBF00"
+      }
+      else if(urlParams.get('result')==='bad'){
+        opacity = 1
+        background = '#ef3249'
+      }
+    }
+    else{
+      opacity = 0.3
+    }
+
+    var rawData =Math.round(ranking/30*100),
+      data = getData(rawData);
     function getData(rawData) {
       var data = [],
         start = Math.round(Math.floor(rawData / 10) * 10);
       data.push(rawData);
-      for (i = start; i > 0; i -= 10) {
+      for (i = start; i > 0; i -= 3) {
         data.push({
           y: i
         });
       }
       return data;
     }
-    
+
     Highcharts.chart('gauge-container', {
       chart: {
         type: 'solidgauge',
-        marginTop: 10
+        marginTop: 10,
+        backgroundColor: background,
       },
-      
+
       title: {
         text: ''
       },
-      
+
       subtitle: {
-        text: rawData,
+        html: true,
+        text: `<span>${ranking}</span><br><br><br><br><br><br><br><br> <hr><span style='border-top: 30px solid white'>30</span>`,
         style: {
-          'font-size': '60px'
+          'color': 'white',
+          'font-size': '120px',
+          'border': '2px solid white'
         },
-        y: 200,
+        y: 250,
         zIndex: 7
       },
-    
+
       tooltip: {
         enabled: false
       },
-    
+
       pane: [{
         startAngle: -120,
         endAngle: 120,
         background: [{ // Track for Move
           outerRadius: '100%',
           innerRadius: '80%',
-          backgroundColor: Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0.3).get(),
-          borderWidth: 0,
+          backgroundColor: Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(opacity).get(),
+          borderWidth: 10,
           shape: 'arc'
         }],
         size: '120%',
@@ -76,13 +120,13 @@
         center: ['50%', '65%'],
         background: []
       }],
-    
+
       yAxis: [{
         min: 0,
         max: 100,
         lineWidth: 2,
         lineColor: 'white',
-        tickInterval: 10,
+        tickInterval: 3.33,
         labels: {
           enabled: false
         },
@@ -92,27 +136,57 @@
         tickColor: 'white',
         zIndex: 6,
         stops: [
-          [0, '#f06'],
-          [0.101, '#f03'],
-          [0.201, '#e10'],
-          [0.301, '#c30'],
-          [0.401, '#a50'],
-          [0.501, '#870'],
-          [0.601, '#690'],
-          [0.701, '#4b0'],
-          [0.801, '#2d0'],
-          [0.901, '#0f0'],
-          [1, '#fff']
+          [0, '#EB354A'],
+          [0.033, '#EB354A'],
+          [0.066, '#EB354A'],
+
+          [0.101, '#F2554C'],
+          [0.134, '#F2554C'],
+          [0.167, '#F2554C'],
+          
+          [0.201, '#F47A50'],
+          [0.234, '#F47A50'],
+          [0.267, '#F47A50'],
+
+          [0.301, '#FAAE55'],
+          [0.334, '#FAAE55'],
+          [0.367, '#FAAE55'],
+
+          [0.401, '#FDC959'],
+          [0.434, '#FDC959'],
+          [0.467, '#FDC959'],
+
+          [0.501, '#E4DE61'],
+          [0.534, '#E4DE61'],
+          [0.567, '#E4DE61'],
+
+          [0.601, '#C8DB6B'],
+          [0.634, '#C8DB6B'],
+          [0.667, '#C8DB6B'],
+
+          [0.701, '#90D57A'],
+          [0.734, '#90D57A'],
+          [0.767, '#90D57A'],
+
+          [0.801, '#75D382'],
+          [0.834, '#75D382'],
+          [0.867, '#75D382'],
+
+          [0.9, '#0de128'],
+          [0.934, '#0de128'],
+          [0.967, '#0de128'],
+
+          [1, '#0de128']
         ]
       }, {
         linkedTo: 0,
         pane: 1,
-        lineWidth: 5,
+        lineWidth: 3,
         lineColor: 'white',
         tickPositions: [],
         zIndex: 6
       }],
-      
+
       series: [{
         animation: false,
         dataLabels: {
@@ -125,6 +199,7 @@
         data: data
       }]
     });
-    </script>
+  </script>
 </body>
+
 </html>
